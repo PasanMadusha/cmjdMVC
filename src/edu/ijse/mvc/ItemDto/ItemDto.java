@@ -13,9 +13,17 @@ public class ItemDto {
     private String desc;
     private String pack;
     private double unitPrice;
-    private int qth;
+    private int qoh;
     
     public ItemDto(){
+    }
+    
+    public ItemDto(String id, String desc,String pack,double unitPrice,int qoh){
+        this.id = id;
+        this.desc = desc;
+        this.pack = pack;
+        this.unitPrice = unitPrice;
+        this.qoh = qoh;
     }
 
     /**
@@ -75,17 +83,22 @@ public class ItemDto {
     }
 
     /**
-     * @return the qth
+     * @return the qoh
      */
     public int getQth() {
-        return qth;
+        return qoh;
     }
 
     /**
-     * @param qth the qth to set
+     * @param qth the qoh to set
      */
     public void setQth(int qth) {
-        this.qth = qth;
+        this.qoh = qth;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemDto{" + "id=" + id + ", desc=" + desc + ", pack=" + pack + ", unitPrice=" + unitPrice + ", qth=" + qoh + '}';
     }
     
     
