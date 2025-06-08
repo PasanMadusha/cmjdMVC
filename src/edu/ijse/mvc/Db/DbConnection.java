@@ -27,5 +27,10 @@ public class DbConnection {
         }
         return dbConnection;
     }
+
+    public Connection getConnection() {
+        return connection;
+    }
+    
     
 }

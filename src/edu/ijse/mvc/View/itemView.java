@@ -6,7 +6,9 @@ package edu.ijse.mvc.View;
 
 import edu.ijse.mvc.ItemDto.ItemDto;
 import edu.ijse.mvc.ItemController.ItemController;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,6 +21,7 @@ public class itemView extends javax.swing.JFrame {
      */
     public itemView() {
         initComponents();
+        loadTable();
     }
 
     /**
@@ -44,6 +47,8 @@ public class itemView extends javax.swing.JFrame {
         jBDelete = new javax.swing.JButton();
         jBUpdate = new javax.swing.JButton();
         jBSave = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblItem = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,8 +83,18 @@ public class itemView extends javax.swing.JFrame {
         jlQth.setText("Qty On Hand");
 
         jBDelete.setText("Delete");
+        jBDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBDeleteActionPerformed(evt);
+            }
+        });
 
         jBUpdate.setText("Update");
+        jBUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBUpdateActionPerformed(evt);
+            }
+        });
 
         jBSave.setText("Save");
         jBSave.addActionListener(new java.awt.event.ActionListener() {
@@ -87,6 +102,24 @@ public class itemView extends javax.swing.JFrame {
                 jBSaveActionPerformed(evt);
             }
         });
+
+        tblItem.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tblItem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblItemMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblItem);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -107,24 +140,18 @@ public class itemView extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(47, 47, 47)
-                                        .addComponent(jtPackSize, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jtUnitPrice, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jtItemCode, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(56, 56, 56)
-                                .addComponent(jlQth, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(52, 52, 52)
-                                .addComponent(jtQth, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(47, 47, 47)
+                                .addComponent(jtPackSize, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(34, 34, 34)))
-                        .addGap(112, 112, 112))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jtUnitPrice, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jtItemCode, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(140, 140, 140)
+                        .addComponent(jlQth, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(82, 82, 82)
+                        .addComponent(jtQth, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(416, 416, 416))
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jBDelete)
@@ -132,7 +159,15 @@ public class itemView extends javax.swing.JFrame {
                         .addComponent(jBUpdate)
                         .addGap(41, 41, 41)
                         .addComponent(jBSave)
-                        .addGap(91, 91, 91))))
+                        .addGap(91, 91, 91))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(47, 47, 47)
+                        .addComponent(jtDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,12 +192,14 @@ public class itemView extends javax.swing.JFrame {
                     .addComponent(jtUnitPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlQth)
                     .addComponent(jtQth, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBDelete)
                     .addComponent(jBUpdate)
                     .addComponent(jBSave))
-                .addContainerGap(193, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(82, Short.MAX_VALUE))
         );
 
         pack();
@@ -171,6 +208,18 @@ public class itemView extends javax.swing.JFrame {
     private void jBSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBSaveActionPerformed
         saveItem();        // TODO add your handling code here:
     }//GEN-LAST:event_jBSaveActionPerformed
+
+    private void jBUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBUpdateActionPerformed
+        updateItem();        // TODO add your handling code here:
+    }//GEN-LAST:event_jBUpdateActionPerformed
+
+    private void jBDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBDeleteActionPerformed
+        deleteItem();        // TODO add your handling code here:
+    }//GEN-LAST:event_jBDeleteActionPerformed
+
+    private void tblItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblItemMouseClicked
+        searchItem();        // TODO add your handling code here:
+    }//GEN-LAST:event_tblItemMouseClicked
 
     /**
      * @param args the command line arguments
@@ -182,6 +231,7 @@ public class itemView extends javax.swing.JFrame {
     private javax.swing.JButton jBSave;
     private javax.swing.JButton jBUpdate;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel jlDescription;
     private javax.swing.JLabel jlItemCode;
     private javax.swing.JLabel jlPackSi;
@@ -192,6 +242,7 @@ public class itemView extends javax.swing.JFrame {
     private javax.swing.JTextField jtPackSize;
     private javax.swing.JTextField jtQth;
     private javax.swing.JTextField jtUnitPrice;
+    private javax.swing.JTable tblItem;
     // End of variables declaration//GEN-END:variables
 
 public void saveItem(){
@@ -201,9 +252,85 @@ public void saveItem(){
     try {
         String resp = itemController.saveItem(itemDto);
         JOptionPane.showMessageDialog(this, resp);
+        loadTable();
+        clear();
     } catch (Exception e) {
         JOptionPane.showMessageDialog(this, e.getMessage());
     }
 }
+
+    private void clear(){
+        jtItemCode.setText("");
+        jtDescription.setText("");
+        jtPackSize.setText("");
+        jtQth.setText("");
+        jtUnitPrice.setText("");
+    }
+
+    private void loadTable(){
+        String [] colums = {"ItemCode", "Description", "PackSize", "UnitPrice", "QtyOnHand"};
+        DefaultTableModel dtm = new DefaultTableModel(colums, 0){
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        tblItem.setModel(dtm);
+        
+        try {
+            ArrayList<ItemDto> dtos = itemController.getAllItem();
+            for(ItemDto dto : dtos){
+                Object[] rowData = {dto.getId(),dto.getDesc(),dto.getPack(),dto.getUnitPrice(),dto.getQth()};
+                dtm.addRow(rowData);
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+        private void searchItem(){
+            String itemCode = (String) tblItem.getValueAt(tblItem.getSelectedRow(), 0);
+            
+            try {
+                ItemDto itemDto = itemController.searchItem(itemCode);
+                if (itemDto != null) {
+                    jtItemCode.setText(itemDto.getId());
+                    jtDescription.setText(itemDto.getDesc());
+                    jtPackSize.setText(itemDto.getPack());
+                    jtUnitPrice.setText(Double.toString(itemDto.getUnitPrice()));
+                    jtQth.setText(Integer.toString(itemDto.getQth()));
+                }
+                else{
+                    JOptionPane.showMessageDialog(this, "Item not Found");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, e.getMessage());
+            }
+        }
+        public void updateItem(){
+        ItemDto itemDto = new ItemDto(jtItemCode.getText(), jtDescription.getText(),
+                jtPackSize.getText(), Double.parseDouble(jtUnitPrice.getText()),
+                Integer.parseInt(jtQth.getText()));
+        
+        System.out.println(itemDto);
+        try {
+            String resp = itemController.updateItem(itemDto);
+            JOptionPane.showMessageDialog(this, resp);
+            loadTable();
+            clear();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+        public void deleteItem(){
+        try {
+            String resp = itemController.deleteItem(jtItemCode.getText());
+            JOptionPane.showMessageDialog(this, resp);
+            loadTable();
+            clear();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
 }
+
 

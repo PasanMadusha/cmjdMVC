@@ -99,8 +99,6 @@ public class ItemDto {
     @Override
     public String toString() {
         return "ItemDto{" + "id=" + id + ", desc=" + desc + ", pack=" + pack + ", unitPrice=" + unitPrice + ", qth=" + qoh + '}';
-    }
-    
-    
+    }   
 }
 
